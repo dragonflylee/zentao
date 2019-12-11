@@ -1,0 +1,17 @@
+version: '2'
+services:
+  zentao:
+    image: zentao:latest
+    ports:
+      - '31080:80'
+      - '11444:11444'
+      - '11443:11443'
+    volumes:
+      - '/tmp/zentao:/app/zentaopms/tmp:Z'
+      - '/data/zentao/config:/app/zentaopms/config:Z'
+      - '/data/zentao/data:/app/zentaopms/www/data:Z'
+      - '/data/zentao/db:/var/lib/mysql:Z'
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    restart: always
+    container_name: 'zentao'
