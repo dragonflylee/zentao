@@ -7,11 +7,11 @@ ENV LANG="en_US.UTF8"
 ENV MYSQL_ROOT_PASSWORD="123456"
 RUN echo -e "LANG=\"en_US.UTF-8\"\nLANGUAGE=\"en_US:en\"" > /etc/default/locale && locale-gen en_US.UTF-8
 
-RUN mkdir -p /app/zentaopms
+RUN mkdir -p /app/zentaopms /app/xxd
 COPY docker-entrypoint.sh /app
 RUN chmod 777 /app/docker-entrypoint.sh
-RUN curl http://dl.cnezsoft.com/zentao/11.7/ZenTaoPMS.11.7.stable.zip -o /var/www/zentao.zip
-RUN cd /var/www/ && unzip -q zentao.zip && rm zentao.zip
+RUN curl http://dl.cnezsoft.com/zentao/11.7/ZenTaoPMS.11.7.stable.zip -o /var/www/zentao.zip && cd /var/www/ && unzip -q zentao.zip && rm zentao.zip
+RUN curl http://dl.cnezsoft.com/xuanxuan/3.0.beta4/xxd.3.0.beta4.linux.x64.tar.gz -o xxd.tar.gz && tar zxf xxd.tar.gz -C /app/xxd --strip-components=1 && rm xxd.tar.gz && /app/xxd/xxd -service install
 RUN a2enmod rewrite
 
 RUN rm -rf /etc/apache2/sites-enabled/000-default.conf /var/lib/mysql/*

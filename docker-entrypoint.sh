@@ -2,7 +2,7 @@
 
 [ $DEBUG ] && set -x
 
-if [ `ls -A /app/zentaopms | wc -w` = 0 ]; then
+if [ -f `/app/zentaopms/VERSION` ]; then
   cp -a /var/www/zentaopms/* /app/zentaopms
 fi
 
@@ -16,17 +16,19 @@ chmod 777 /app/zentaopms/www
 chmod 777 /app/zentaopms/config
 chmod -R a+rx /app/zentaopms/bin/*
 
-/etc/init.d/apache2 start
+service apache2 start
+service xxd start
 
-chown -R www-data:www-data /app/zentaopms
+chown -R www-data:www-data /app/zentaopms/
 chown -R mysql:mysql /var/lib/mysql/
 if [ `ls -A /var/lib/mysql/ | wc -w` = 0 ]; then
+  echo 'Starting init database'
   mysql_install_db --defaults-file=/etc/mysql/my.cnf
-  /etc/init.d/mysql start
+  service mysql start
   /usr/bin/mysqladmin -uroot password $MYSQL_ROOT_PASSWORD
   mysql -uroot -e "UPDATE mysql.user SET plugin='mysql_native_password' WHERE user='root';FLUSH PRIVILEGES;"
 else
-  /etc/init.d/mysql start
+  service mysql start
 fi
 
 if [ `ls -A /app/zentaopms/config/ | wc -w` != 0 ]; then
