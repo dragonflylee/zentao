@@ -17,7 +17,6 @@ chmod 777 /app/zentaopms/config
 chmod -R a+rx /app/zentaopms/bin/*
 
 service apache2 start
-#service xxd start
 
 chown -R www-data:www-data /app/zentaopms/
 chown -R mysql:mysql /var/lib/mysql/
